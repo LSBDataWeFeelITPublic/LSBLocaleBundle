@@ -1,1 +1,25 @@
 services:
+
+    LSB\LocaleBundle\Form\CountryType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\CountryTranslationType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\CurrencyType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\CurrencyExchangeRateType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\LanguageType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\LanguageTranslationType:
+        tags:
+            - {name: form.type}

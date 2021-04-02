@@ -1,1 +1,31 @@
 services:
+
+    LSB\LocaleBundle\Repository\CountryRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\CountryRepositoryInterface: '@LSB\LocaleBundle\Repository\CountryRepository'
+
+    LSB\LocaleBundle\Repository\CountryTranslationRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\CountryTranslationRepositoryInterface: '@LSB\LocaleBundle\Repository\CountryTranslationRepository'
+
+    LSB\LocaleBundle\Repository\CurrencyRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\CurrencyRepositoryInterface: '@LSB\LocaleBundle\Repository\CurrencyRepository'
+
+    LSB\LocaleBundle\Repository\CurrencyExchangeRateRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\CurrencyExchangeRateRepositoryInterface: '@LSB\LocaleBundle\Repository\CurrencyExchangeRateRepository'
+
+    LSB\LocaleBundle\Repository\LanguageRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\LanguageRepositoryInterface: '@LSB\LocaleBundle\Repository\LanguageRepository'
+
+    LSB\LocaleBundle\Repository\LanguageTranslationRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\LanguageTranslationRepositoryInterface: '@LSB\LocaleBundle\Repository\LanguageTranslationRepository'

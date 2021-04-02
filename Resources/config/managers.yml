@@ -1,1 +1,16 @@
 services:
+    LSB\LocaleBundle\Manager\CountryManager:
+        arguments:
+            - '@lsb_utility_object_manager'
+
+    LSB\LocaleBundle\Manager\CurrencyManager:
+        arguments:
+            - '@lsb_utility_object_manager'
+
+    LSB\LocaleBundle\Manager\CurrencyExchangeRateManager:
+        arguments:
+            - '@lsb_utility_object_manager'
+
+    LSB\LocaleBundle\Manager\LanguageManager:
+        arguments:
+            - '@lsb_utility_object_manager'

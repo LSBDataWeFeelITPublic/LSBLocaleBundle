@@ -1,1 +1,29 @@
 services:
+
+    LSB\LocaleBundle\Factory\CountryFactory:
+        arguments:
+            - '%lsb_locale.config.resources.country.class.entity%'
+    lsb_locale_factory_country:
+        alias: LSB\LocaleBundle\Factory\CountryFactory
+    LSB\LocaleBundle\Factory\CountryFactoryInterface: '@LSB\LocaleBundle\Factory\CountryFactory'
+
+    LSB\LocaleBundle\Factory\CurrencyFactory:
+        arguments:
+            - '%lsb_locale.config.resources.currency.class.entity%'
+    lsb_locale_factory_currency:
+        alias: LSB\LocaleBundle\Factory\CurrencyFactory
+    LSB\LocaleBundle\Factory\CurrencyFactoryInterface: '@LSB\LocaleBundle\Factory\CurrencyFactory'
+
+    LSB\LocaleBundle\Factory\CurrencyExchangeRateFactory:
+        arguments:
+            - '%lsb_locale.config.resources.currency_exchange_rate.class.entity%'
+    lsb_locale_factory_currency_exchange_rate:
+        alias: LSB\LocaleBundle\Factory\CurrencyExchangeRateFactory
+    LSB\LocaleBundle\Factory\CurrencyExchangeRateFactoryInterface: '@LSB\LocaleBundle\Factory\CurrencyExchangeRateFactory'
+
+    LSB\LocaleBundle\Factory\LanguageFactory:
+        arguments:
+            - '%lsb_locale.config.resources.language.class.entity%'
+    lsb_locale_factory_language:
+        alias: LSB\LocaleBundle\Factory\LanguageFactory
+    LSB\LocaleBundle\Factory\LanguageFactoryInterface: '@LSB\LocaleBundle\Factory\LanguageFactory'
