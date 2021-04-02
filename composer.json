@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "LSB\\TemplateVendorSF5Bundle\\": ""
+            "LSB\\LocaleBundle\\": ""
         },
         "exclude-from-classmap": [
             "Tests/"
