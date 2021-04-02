@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class Entity
  * @package LSB\LocaleBundle\Entity
  *
- * @UniqueEntity("name")
+ * @UniqueEntity("isoCode")
  * @MappedSuperclass
  */
 class Country implements TranslatableInterface, CountryInterface
