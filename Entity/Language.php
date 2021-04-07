@@ -6,6 +6,7 @@ namespace LSB\LocaleBundle\Entity;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use LSB\UtilityBundle\Traits\CreatedUpdatedTrait;
 use LSB\UtilityBundle\Traits\UuidTrait;
 use LSB\UtilityBundle\Translatable\TranslatableTrait;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("isoCode")
  * @MappedSuperclass
  */
-class Language implements LanguageInterface
+class Language implements LanguageInterface, TranslatableInterface
 {
     use UuidTrait;
     use TranslatableTrait;
@@ -31,14 +32,6 @@ class Language implements LanguageInterface
      * @Assert\Length(max="5")
      */
     protected string $isoCode;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="-", unique=true)
-     */
-    protected string $slug;
 
     /**
      * @var bool
@@ -93,24 +86,6 @@ class Language implements LanguageInterface
     public function setIsoCode(string $isoCode): self
     {
         $this->isoCode = $isoCode;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string|null $slug
-     * @return $this
-     */
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
         return $this;
     }
 

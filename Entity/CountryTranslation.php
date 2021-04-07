@@ -5,7 +5,9 @@ namespace LSB\LocaleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
+use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
 use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use LSB\UtilityBundle\Traits\IdTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,10 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package LSB\LocaleBundle\Entity
  * @MappedSuperclass
  */
-class CountryTranslation implements CountryTranslationInterface, TranslationInterface
+class CountryTranslation implements CountryTranslationInterface, TranslationInterface, SluggableInterface
 {
     use IdTrait;
     use TranslationTrait;
+    use SluggableTrait;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -42,5 +45,21 @@ class CountryTranslation implements CountryTranslationInterface, TranslationInte
     {
         $this->name = $name;
         return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSluggableFields(): array
+    {
+        return ['name'];
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldGenerateUniqueSlugs(): bool
+    {
+        return true;
     }
 }

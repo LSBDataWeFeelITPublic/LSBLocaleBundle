@@ -15,6 +15,12 @@ services:
             - '@doctrine'
     LSB\LocaleBundle\Repository\CurrencyRepositoryInterface: '@LSB\LocaleBundle\Repository\CurrencyRepository'
 
+    LSB\LocaleBundle\Repository\CurrencyTranslationRepository:
+        arguments:
+            - '@doctrine'
+
+    LSB\LocaleBundle\Repository\CurrencyTranslationRepositoryInterface: '@LSB\LocaleBundle\Repository\CurrencyTranslationRepository'
+
     LSB\LocaleBundle\Repository\CurrencyExchangeRateRepository:
         arguments:
             - '@doctrine'

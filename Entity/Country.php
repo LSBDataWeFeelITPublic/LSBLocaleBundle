@@ -43,9 +43,9 @@ class Country implements TranslatableInterface, CountryInterface
      *
      * @var CurrencyInterface|null
      *
-     * @ORM\ManyToOne(targetEntity="LSB\LocaleBundle\Entity\CurrencyInterface", inversedBy="languages")
+     * @ORM\ManyToOne(targetEntity="LSB\LocaleBundle\Entity\CurrencyInterface")
      */
-    protected CurrencyInterface $defaultCurrency;
+    protected ?CurrencyInterface $defaultCurrency;
 
     /**
      * @var boolean

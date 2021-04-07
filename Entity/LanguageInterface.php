@@ -21,17 +21,6 @@ interface LanguageInterface
     public function setIsoCode(string $isoCode): self;
 
     /**
-     * @return string|null
-     */
-    public function getSlug(): ?string;
-
-    /**
-     * @param string|null $slug
-     * @return $this
-     */
-    public function setSlug(?string $slug): self;
-
-    /**
      * @return bool
      */
     public function isEnabled(): bool;

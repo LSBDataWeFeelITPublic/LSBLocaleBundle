@@ -7,6 +7,7 @@ use LSB\LocaleBundle\Entity\CountryInterface;
 use LSB\LocaleBundle\Entity\CountryTranslationInterface;
 use LSB\LocaleBundle\Entity\CurrencyExchangeRateInterface;
 use LSB\LocaleBundle\Entity\CurrencyInterface;
+use LSB\LocaleBundle\Entity\CurrencyTranslationInterface;
 use LSB\LocaleBundle\Entity\LanguageInterface;
 use LSB\LocaleBundle\Entity\LanguageTranslationInterface;
 use LSB\LocaleBundle\Factory\CountryFactory;
@@ -16,6 +17,7 @@ use LSB\LocaleBundle\Factory\LanguageFactory;
 use LSB\LocaleBundle\Form\CountryTranslationType;
 use LSB\LocaleBundle\Form\CountryType;
 use LSB\LocaleBundle\Form\CurrencyExchangeRateType;
+use LSB\LocaleBundle\Form\CurrencyTranslationType;
 use LSB\LocaleBundle\Form\CurrencyType;
 use LSB\LocaleBundle\Form\LanguageTranslationType;
 use LSB\LocaleBundle\Form\LanguageType;
@@ -94,6 +96,17 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->defaultValue(CurrencyRepository::class)->end()
                                     ->scalarNode(BE::CONFIG_KEY_MANAGER)->defaultValue(CurrencyManager::class)->end()
                                     ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CurrencyType::class)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->children()
+                            ->arrayNode(BE::CONFIG_KEY_TRANSLATION)
+                                ->children()
+                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
+                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CurrencyTranslationInterface::class)->end()
+                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->end()
+                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->end()
+                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CurrencyTranslationType::class)->end()
                             ->end()
                         ->end()
                     ->end()

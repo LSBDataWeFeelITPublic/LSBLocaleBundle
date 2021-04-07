@@ -5,24 +5,23 @@ namespace LSB\LocaleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use LSB\UtilityBundle\Traits\CreatedUpdatedTrait;
 use LSB\UtilityBundle\Traits\UuidTrait;
+use LSB\UtilityBundle\Translatable\TranslatableTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Currency
  * @package LSB\LocaleBundle\Entity
+ * @UniqueEntity("isoCode")
  * @MappedSuperclass
  */
-class Currency implements CurrencyInterface
+class Currency implements CurrencyInterface, TranslatableInterface
 {
     use UuidTrait;
+    use TranslatableTrait;
     use CreatedUpdatedTrait;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=5, nullable=true)
-     */
-    protected string $name;
 
     /**
      * @var string
@@ -31,10 +30,10 @@ class Currency implements CurrencyInterface
     protected string $isoCode;
 
     /**
-     * @var integer
+     * @var integer|null
      * @ORM\Column(type="integer", nullable=true)
      */
-    protected int $position;
+    protected ?int $position;
 
     /**
      * @var bool
@@ -62,19 +61,9 @@ class Currency implements CurrencyInterface
     /**
      * @return string
      */
-    public function getName(): string
+    public function __toString()
     {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return Currency
-     */
-    public function setName(string $name): Currency
-    {
-        $this->name = $name;
-        return $this;
+        return (string) $this->uuid;
     }
 
     /**
@@ -89,25 +78,25 @@ class Currency implements CurrencyInterface
      * @param string $isoCode
      * @return Currency
      */
-    public function setIsoCode(string $isoCode): Currency
+    public function setIsoCode(string $isoCode): self
     {
         $this->isoCode = $isoCode;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPosition(): int
+    public function getPosition(): ?int
     {
         return $this->position;
     }
 
     /**
-     * @param int $position
+     * @param int|null $position
      * @return Currency
      */
-    public function setPosition(int $position): Currency
+    public function setPosition(?int $position): self
     {
         $this->position = $position;
         return $this;
@@ -125,7 +114,7 @@ class Currency implements CurrencyInterface
      * @param bool $isDefault
      * @return Currency
      */
-    public function setIsDefault(bool $isDefault): Currency
+    public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
         return $this;

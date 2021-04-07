@@ -3,12 +3,19 @@ services:
     LSB\LocaleBundle\Form\CountryType:
         tags:
             - {name: form.type}
+        arguments:
+            $languageManager: '@LSB\LocaleBundle\Manager\LanguageManager'
+            $currencyManager: '@LSB\LocaleBundle\Manager\CurrencyManager'
 
     LSB\LocaleBundle\Form\CountryTranslationType:
         tags:
             - {name: form.type}
 
     LSB\LocaleBundle\Form\CurrencyType:
+        tags:
+            - {name: form.type}
+
+    LSB\LocaleBundle\Form\CurrencyTranslationType:
         tags:
             - {name: form.type}
 

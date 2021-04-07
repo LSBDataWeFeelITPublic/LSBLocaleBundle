@@ -5,7 +5,6 @@ namespace LSB\LocaleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Knp\DoctrineBehaviors\Contract\Entity\SluggableInterface;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model\Sluggable\SluggableTrait;
@@ -14,11 +13,11 @@ use LSB\UtilityBundle\Traits\IdTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LanguageTranslation
+ * Class CurrencyTranslation
  * @package LSB\LocaleBundle\Entity
  * @MappedSuperclass
  */
-class LanguageTranslation implements LanguageTranslationInterface, TranslationInterface, SluggableInterface
+class CurrencyTranslation implements CurrencyTranslationInterface, TranslationInterface, SluggableInterface
 {
     use IdTrait;
     use TranslationTrait;

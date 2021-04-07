@@ -9,16 +9,6 @@ namespace LSB\LocaleBundle\Entity;
  */
 interface CurrencyInterface
 {
-    /**
-     * @return string
-     */
-    public function getName(): string;
-
-    /**
-     * @param string $name
-     * @return Currency
-     */
-    public function setName(string $name): Currency;
 
     /**
      * @return string
@@ -32,15 +22,15 @@ interface CurrencyInterface
     public function setIsoCode(string $isoCode): Currency;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPosition(): int;
+    public function getPosition(): ?int;
 
     /**
      * @param int $position
      * @return Currency
      */
-    public function setPosition(int $position): Currency;
+    public function setPosition(?int $position): Currency;
 
     /**
      * @return bool
