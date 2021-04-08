@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Entity;
 
+use LSB\UtilityBundle\Interfaces\UuidInterface;
+
 /**
  * Interface CountryInterface
  * @package LSB\LocaleBundle\Entity
  */
-interface CountryInterface
+interface CountryInterface extends UuidInterface
 {
+    
     /**
      * @return mixed
      */

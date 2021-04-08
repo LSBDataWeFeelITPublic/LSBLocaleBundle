@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Entity;
 
+use LSB\UtilityBundle\Interfaces\IdInterface;
+
 /**
  *
  * Class CountryTranslation
  * @package LSB\LocaleBundle\Entity
  */
-interface CountryTranslationInterface
+interface CountryTranslationInterface extends IdInterface
 {
     /**
      * @return string|null

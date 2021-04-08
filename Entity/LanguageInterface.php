@@ -1,13 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Entity;
 
+
+use LSB\UtilityBundle\Interfaces\UuidInterface;
 
 /**
  * Interface LanguageInterface
  * @package LSB\LocaleBundle\Entity
  */
-interface LanguageInterface
+interface LanguageInterface extends UuidInterface
 {
     /**
      * @return string

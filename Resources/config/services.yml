@@ -1,1 +1,9 @@
 services:
+    LSB\LocaleBundle\Generator\CountryGenerator:
+        arguments:
+            "$countryManager": '@LSB\LocaleBundle\Manager\CountryManager'
+
+    LSB\LocaleBundle\Command\GenerateCountriesCommand:
+        tags: ['console.command']
+        arguments:
+            "$countryGenerator": '@LSB\LocaleBundle\Generator\CountryGenerator'

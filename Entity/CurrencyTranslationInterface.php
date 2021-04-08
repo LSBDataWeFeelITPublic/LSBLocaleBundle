@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Entity;
 
+use LSB\UtilityBundle\Interfaces\IdInterface;
+
 /**
  * Interface CurrencyTranslationInterface
  * @package LSB\LocaleBundle\Entity
  */
-interface CurrencyTranslationInterface
+interface CurrencyTranslationInterface extends IdInterface
 {
     /**
      * @return string|null

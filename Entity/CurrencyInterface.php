@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Entity;
 
+use LSB\UtilityBundle\Interfaces\UuidInterface;
+
 /**
  * Interface CurrencyInterface
  * @package LSB\LocaleBundle\Entity
  */
-interface CurrencyInterface
+interface CurrencyInterface extends UuidInterface
 {
 
     /**
