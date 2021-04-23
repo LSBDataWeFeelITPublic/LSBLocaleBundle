@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LSB\LocaleBundle\Entity\Country;
 use LSB\LocaleBundle\Entity\CountryInterface;
+use LSB\UtilityBundle\Repository\BaseRepository;
 use LSB\UtilityBundle\Repository\PaginationInterface;
 use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
 
@@ -14,7 +14,7 @@ use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
  * Class CountryRepository
  * @package LSB\LocaleBundle\Repository
  */
-class CountryRepository extends ServiceEntityRepository implements CountryRepositoryInterface, PaginationInterface
+class CountryRepository extends BaseRepository implements CountryRepositoryInterface, PaginationInterface
 {
     use PaginationRepositoryTrait;
 

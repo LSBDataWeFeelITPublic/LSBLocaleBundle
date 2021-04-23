@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LSB\LocaleBundle\Entity\LanguageTranslation;
+use LSB\UtilityBundle\Repository\BaseRepository;
 use LSB\UtilityBundle\Repository\PaginationInterface;
 use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
 
@@ -13,7 +13,7 @@ use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
  * Class LanguageTranslationRepository
  * @package LSB\LocaleBundle\Repository
  */
-class LanguageTranslationRepository extends ServiceEntityRepository implements LanguageTranslationRepositoryInterface, PaginationInterface
+class LanguageTranslationRepository extends BaseRepository implements LanguageTranslationRepositoryInterface, PaginationInterface
 {
     use PaginationRepositoryTrait;
 
