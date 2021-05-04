@@ -31,7 +31,7 @@ use LSB\LocaleBundle\Repository\CurrencyExchangeRateRepository;
 use LSB\LocaleBundle\Repository\CurrencyRepository;
 use LSB\LocaleBundle\Repository\LanguageRepository;
 use LSB\UtilityBundle\DependencyInjection\BaseExtension as BE;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use LSB\UtilityBundle\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
@@ -56,107 +56,48 @@ class Configuration implements ConfigurationInterface
             ->scalarNode(BE::CONFIG_KEY_TRANSLATION_DOMAIN)->defaultValue((new \ReflectionClass(LSBLocaleBundle::class))->getShortName())->end()
             ->arrayNode(BE::CONFIG_KEY_RESOURCES)
             ->children()
-            // Start Country
-                ->arrayNode('country')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_CLASSES)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CountryInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->defaultValue(CountryFactory::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->defaultValue(CountryRepository::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_MANAGER)->defaultValue(CountryManager::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CountryType::class)->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_TRANSLATION)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CountryTranslationInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CountryTranslationType::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                ->translatedResourceNode(
+                    'country',
+                    CountryInterface::class,
+                    CountryFactory::class,
+                    CountryRepository::class,
+                    CountryManager::class,
+                    CountryType::class,
+                    CountryTranslationInterface::class,
+                    CountryTranslationType::class
+                )
                 ->end()
-            // End Country
-            // Start Country
-                ->arrayNode('currency')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_CLASSES)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CurrencyInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->defaultValue(CurrencyFactory::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->defaultValue(CurrencyRepository::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_MANAGER)->defaultValue(CurrencyManager::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CurrencyType::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->children()
-                            ->arrayNode(BE::CONFIG_KEY_TRANSLATION)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CurrencyTranslationInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CurrencyTranslationType::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                ->translatedResourceNode(
+                    'currency',
+                    CurrencyInterface::class,
+                    CurrencyFactory::class,
+                    CurrencyRepository::class,
+                    CurrencyManager::class,
+                    CurrencyType::class,
+                    CurrencyTranslationInterface::class,
+                    CurrencyTranslationType::class
+                )
                 ->end()
-            // End Country
-             // Start Country
-                ->arrayNode('currency_exchange_rate')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_CLASSES)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(CurrencyExchangeRateInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->defaultValue(CurrencyExchangeRateFactory::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->defaultValue(CurrencyExchangeRateRepository::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_MANAGER)->defaultValue(CurrencyExchangeRateManager::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(CurrencyExchangeRateType::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                ->resourceNode(
+                    'currency_exchange_rate',
+                    CurrencyExchangeRateInterface::class,
+                    CurrencyExchangeRateFactory::class,
+                    CurrencyExchangeRateRepository::class,
+                    CurrencyExchangeRateManager::class,
+                    CurrencyExchangeRateType::class
+                )
                 ->end()
-            // End Country
-            // Start Country
-                ->arrayNode('language')
-                    ->addDefaultsIfNotSet()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_CLASSES)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(LanguageInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->defaultValue(LanguageFactory::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->defaultValue(LanguageRepository::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_MANAGER)->defaultValue(LanguageManager::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(LanguageType::class)->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->children()
-                            ->arrayNode(BE::CONFIG_KEY_TRANSLATION)
-                                ->children()
-                                    ->scalarNode(BE::CONFIG_KEY_ENTITY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_INTERFACE)->defaultValue(LanguageTranslationInterface::class)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FACTORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_REPOSITORY)->end()
-                                    ->scalarNode(BE::CONFIG_KEY_FORM)->defaultValue(LanguageTranslationType::class)->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                ->translatedResourceNode(
+                    'language',
+                    LanguageInterface::class,
+                    LanguageFactory::class,
+                    LanguageRepository::class,
+                    LanguageManager::class,
+                    LanguageType::class,
+                    LanguageTranslationInterface::class,
+                    LanguageTranslationType::class
+                )
                 ->end()
-            // End Country
             ->end()
             ->end();
 
