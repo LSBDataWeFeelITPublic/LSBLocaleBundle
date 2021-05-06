@@ -3,12 +3,19 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\DependencyInjection;
 
+use LSB\LocaleBundle\Entity\Country;
 use LSB\LocaleBundle\Entity\CountryInterface;
+use LSB\LocaleBundle\Entity\CountryTranslation;
 use LSB\LocaleBundle\Entity\CountryTranslationInterface;
+use LSB\LocaleBundle\Entity\Currency;
+use LSB\LocaleBundle\Entity\CurrencyExchangeRate;
 use LSB\LocaleBundle\Entity\CurrencyExchangeRateInterface;
 use LSB\LocaleBundle\Entity\CurrencyInterface;
+use LSB\LocaleBundle\Entity\CurrencyTranslation;
 use LSB\LocaleBundle\Entity\CurrencyTranslationInterface;
+use LSB\LocaleBundle\Entity\Language;
 use LSB\LocaleBundle\Entity\LanguageInterface;
+use LSB\LocaleBundle\Entity\LanguageTranslation;
 use LSB\LocaleBundle\Entity\LanguageTranslationInterface;
 use LSB\LocaleBundle\Factory\CountryFactory;
 use LSB\LocaleBundle\Factory\CurrencyExchangeRateFactory;
@@ -53,33 +60,38 @@ class Configuration implements ConfigurationInterface
         $treeBuilder
             ->getRootNode()
             ->children()
-            ->scalarNode(BE::CONFIG_KEY_TRANSLATION_DOMAIN)->defaultValue((new \ReflectionClass(LSBLocaleBundle::class))->getShortName())->end()
-            ->arrayNode(BE::CONFIG_KEY_RESOURCES)
+            ->bundleTranslationDomainScalar(LSBLocaleBundle::class)->end()
+            ->resourcesNode()
             ->children()
                 ->translatedResourceNode(
                     'country',
+                    Country::class,
                     CountryInterface::class,
                     CountryFactory::class,
                     CountryRepository::class,
                     CountryManager::class,
                     CountryType::class,
+                    CountryTranslation::class,
                     CountryTranslationInterface::class,
                     CountryTranslationType::class
                 )
                 ->end()
                 ->translatedResourceNode(
                     'currency',
+                    Currency::class,
                     CurrencyInterface::class,
                     CurrencyFactory::class,
                     CurrencyRepository::class,
                     CurrencyManager::class,
                     CurrencyType::class,
+                    CurrencyTranslation::class,
                     CurrencyTranslationInterface::class,
                     CurrencyTranslationType::class
                 )
                 ->end()
                 ->resourceNode(
                     'currency_exchange_rate',
+                    CurrencyExchangeRate::class,
                     CurrencyExchangeRateInterface::class,
                     CurrencyExchangeRateFactory::class,
                     CurrencyExchangeRateRepository::class,
@@ -89,11 +101,13 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->translatedResourceNode(
                     'language',
+                    Language::class,
                     LanguageInterface::class,
                     LanguageFactory::class,
                     LanguageRepository::class,
                     LanguageManager::class,
                     LanguageType::class,
+                    LanguageTranslation::class,
                     LanguageTranslationInterface::class,
                     LanguageTranslationType::class
                 )
