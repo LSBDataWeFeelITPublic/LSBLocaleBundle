@@ -14,3 +14,7 @@ services:
     LSB\LocaleBundle\Manager\LanguageManager:
         arguments:
             - '@lsb_utility_object_manager'
+
+    LSB\LocaleBundle\Manager\TaxManager:
+        arguments:
+            - '@lsb_utility_object_manager'

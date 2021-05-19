@@ -17,10 +17,13 @@ use LSB\LocaleBundle\Entity\Language;
 use LSB\LocaleBundle\Entity\LanguageInterface;
 use LSB\LocaleBundle\Entity\LanguageTranslation;
 use LSB\LocaleBundle\Entity\LanguageTranslationInterface;
+use LSB\LocaleBundle\Entity\Tax;
+use LSB\LocaleBundle\Entity\TaxInterface;
 use LSB\LocaleBundle\Factory\CountryFactory;
 use LSB\LocaleBundle\Factory\CurrencyExchangeRateFactory;
 use LSB\LocaleBundle\Factory\CurrencyFactory;
 use LSB\LocaleBundle\Factory\LanguageFactory;
+use LSB\LocaleBundle\Factory\TaxFactory;
 use LSB\LocaleBundle\Form\CountryTranslationType;
 use LSB\LocaleBundle\Form\CountryType;
 use LSB\LocaleBundle\Form\CurrencyExchangeRateType;
@@ -28,15 +31,18 @@ use LSB\LocaleBundle\Form\CurrencyTranslationType;
 use LSB\LocaleBundle\Form\CurrencyType;
 use LSB\LocaleBundle\Form\LanguageTranslationType;
 use LSB\LocaleBundle\Form\LanguageType;
+use LSB\LocaleBundle\Form\TaxType;
 use LSB\LocaleBundle\LSBLocaleBundle;
 use LSB\LocaleBundle\Manager\CountryManager;
 use LSB\LocaleBundle\Manager\CurrencyExchangeRateManager;
 use LSB\LocaleBundle\Manager\CurrencyManager;
 use LSB\LocaleBundle\Manager\LanguageManager;
+use LSB\LocaleBundle\Manager\TaxManager;
 use LSB\LocaleBundle\Repository\CountryRepository;
 use LSB\LocaleBundle\Repository\CurrencyExchangeRateRepository;
 use LSB\LocaleBundle\Repository\CurrencyRepository;
 use LSB\LocaleBundle\Repository\LanguageRepository;
+use LSB\LocaleBundle\Repository\TaxRepository;
 use LSB\UtilityBundle\DependencyInjection\BaseExtension as BE;
 use LSB\UtilityBundle\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -110,6 +116,16 @@ class Configuration implements ConfigurationInterface
                     LanguageTranslation::class,
                     LanguageTranslationInterface::class,
                     LanguageTranslationType::class
+                )
+                ->end()
+                ->resourceNode(
+                    'tax',
+                    Tax::class,
+                    TaxInterface::class,
+                    TaxFactory::class,
+                    TaxRepository::class,
+                    TaxManager::class,
+                    TaxType::class
                 )
                 ->end()
             ->end()

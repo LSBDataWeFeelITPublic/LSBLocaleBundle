@@ -30,3 +30,7 @@ services:
     LSB\LocaleBundle\Form\LanguageTranslationType:
         tags:
             - {name: form.type}
+
+    LSB\LocaleBundle\Form\TaxType:
+        tags:
+            - {name: form.type}

@@ -23,3 +23,9 @@ services:
     lsb_locale_factory_language:
         alias: LSB\LocaleBundle\Factory\LanguageFactory
     LSB\LocaleBundle\Factory\LanguageFactoryInterface: '@LSB\LocaleBundle\Factory\LanguageFactory'
+
+    LSB\LocaleBundle\Factory\TaxFactory: ~
+
+    lsb_locale_factory_tax:
+        alias: LSB\LocaleBundle\Factory\TaxFactory
+    LSB\LocaleBundle\Factory\TaxFactoryInterface: '@LSB\LocaleBundle\Factory\TaxFactory'

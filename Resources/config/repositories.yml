@@ -35,3 +35,8 @@ services:
         arguments:
             - '@doctrine'
     LSB\LocaleBundle\Repository\LanguageTranslationRepositoryInterface: '@LSB\LocaleBundle\Repository\LanguageTranslationRepository'
+
+    LSB\LocaleBundle\Repository\TaxRepository:
+        arguments:
+            - '@doctrine'
+    LSB\LocaleBundle\Repository\TaxRepositoryInterface: '@LSB\LocaleBundle\Repository\TaxRepository'
