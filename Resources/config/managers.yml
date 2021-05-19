@@ -17,4 +17,6 @@ services:
 
     LSB\LocaleBundle\Manager\TaxManager:
         arguments:
-            - '@lsb_utility_object_manager'
+            "$objectManager": '@lsb_utility_object_manager'
+            "$countryManager": '@LSB\LocaleBundle\Manager\CountryManager'
+            "$vatValidator": '@ibericode_vat.validator'
