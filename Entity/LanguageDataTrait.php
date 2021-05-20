@@ -16,7 +16,7 @@ trait LanguageDataTrait
 {
 
     /**
-     * Kod języka
+     * Language code
      *
      * @var string|null
      *
@@ -26,23 +26,23 @@ trait LanguageDataTrait
      *     groups={"Default"}
      * )
      */
-    protected $languageCode;
+    protected ?string $languageCode;
 
     /**
-     * Język
+     * Language relation
      *
      * @var Language|null
      *
-     * @ORM\ManyToOne(targetEntity="LSB\LocaleBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="LSB\LocaleBundle\Entity\LanguageInterface")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $language;
 
     /**
-     * @param Language|null $language
+     * @param LanguageInterface|null $language
      * @return $this
      */
-    public function setLanguage(Language $language = null): self
+    public function setLanguage(LanguageInterface $language = null): self
     {
         $this->languageCode = $language ? $language->getCode() : null;
 
@@ -54,7 +54,7 @@ trait LanguageDataTrait
     /**
      * @return Language|null
      */
-    public function getLanguage(): ?Language
+    public function getLanguage(): ?LanguageInterface
     {
         return $this->language;
     }
