@@ -6,14 +6,13 @@ namespace LSB\LocaleBundle\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use LSB\LocaleBundle\Entity\Currency;
 use LSB\UtilityBundle\Repository\BaseRepository;
-use LSB\UtilityBundle\Repository\PaginationInterface;
 use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
 
 /**
  * Class CurrencyRepository
  * @package LSB\LocaleBundle\Repository
  */
-class CurrencyRepository extends BaseRepository implements CurrencyRepositoryInterface, PaginationInterface
+class CurrencyRepository extends BaseRepository implements CurrencyRepositoryInterface
 {
     use PaginationRepositoryTrait;
 

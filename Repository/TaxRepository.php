@@ -6,14 +6,13 @@ namespace LSB\LocaleBundle\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use LSB\LocaleBundle\Entity\Tax;
 use LSB\UtilityBundle\Repository\BaseRepository;
-use LSB\UtilityBundle\Repository\PaginationInterface;
 use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
 
 /**
  * Class TaxRepository
  * @package LSB\LocaleBundle\Repository
  */
-class TaxRepository extends BaseRepository implements TaxRepositoryInterface, PaginationInterface
+class TaxRepository extends BaseRepository implements TaxRepositoryInterface
 {
     use PaginationRepositoryTrait;
 

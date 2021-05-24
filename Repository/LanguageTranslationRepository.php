@@ -13,7 +13,7 @@ use LSB\UtilityBundle\Repository\PaginationRepositoryTrait;
  * Class LanguageTranslationRepository
  * @package LSB\LocaleBundle\Repository
  */
-class LanguageTranslationRepository extends BaseRepository implements LanguageTranslationRepositoryInterface, PaginationInterface
+class LanguageTranslationRepository extends BaseRepository implements LanguageTranslationRepositoryInterface
 {
     use PaginationRepositoryTrait;
 
