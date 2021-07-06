@@ -16,9 +16,9 @@ use LSB\UtilityBundle\Repository\RepositoryInterface;
 use Ibericode\Vat\Validator;
 
 /**
-* Class TaxManager
-* @package LSB\LocaleBundle\Manager
-*/
+ * Class TaxManager
+ * @package LSB\LocaleBundle\Manager
+ */
 class TaxManager extends BaseManager
 {
     const TIMEOUT = '10';
@@ -191,8 +191,7 @@ class TaxManager extends BaseManager
 
     /**
      * @param $taxId
-     * @return mixed|null|string|string[]
-     * @throws \Ibericode\Vat\Vies\ViesException
+     * @return string|null
      */
     public function getCountryCodeFromTaxId($taxId): ?string
     {
@@ -258,32 +257,30 @@ class TaxManager extends BaseManager
 
     /**
      * @param null|string $taxId
-     * @return mixed|null|string|string[]
+     * @return string|null
      */
     public static function fetchCountryCodeFromTaxId(?string $taxId): ?string
     {
-        $countryCode = null;
-
         $taxId = str_replace(' ', '', $taxId);
-        $countryCode = $result = preg_replace("/[^A-Za-z ]/", '', $taxId);
+        $countryCode = preg_replace("/[^A-Za-z ]/", '', $taxId);
 
         return mb_strtoupper($countryCode);
     }
 
     /**
      * @param float $nettoValue
-     * @param float $taxPercentage
+     * @param float|int $taxPercentage
      * @param bool $round
      * @param bool $ceil
      * @return float
      */
     public static function calculateGrossValue(
         float $nettoValue,
-        float $taxPercentage,
+        float|int $taxPercentage,
         bool $round = true,
         bool $ceil = false
     ): float {
-        $grossValue = $nettoValue * ((100 + $taxPercentage) / 100);
+        $grossValue = $nettoValue * ((100 + (float)$taxPercentage) / 100);
 
         if ($round) {
             $grossValue = round($grossValue, 2);
@@ -298,18 +295,18 @@ class TaxManager extends BaseManager
 
     /**
      * @param float $grossValue
-     * @param float $taxPercentage
+     * @param float|int $taxPercentage
      * @param bool $round
      * @param bool $ceil
      * @return float
      */
     public static function calculateNettoValue(
         float $grossValue,
-        float $taxPercentage,
+        float|int $taxPercentage,
         bool $round = true,
         bool $ceil = false
     ): float {
-        $nettoValue = $grossValue / ((100 + $taxPercentage) / 100);
+        $nettoValue = $grossValue / ((100 + (float)$taxPercentage) / 100);
 
         if ($round) {
             $nettoValue = round($nettoValue, 2);
@@ -345,9 +342,9 @@ class TaxManager extends BaseManager
         $totalGross = (float)0;
 
         foreach ($totalNettoRes as $taxPercentage => $nettoValue) {
-            $totalNetto += (float) $nettoValue;
+            $totalNetto += (float)$nettoValue;
             if ($addTax) {
-                $grossValue = ($nettoValue * (100 + (float) $taxPercentage) / 100);
+                $grossValue = ($nettoValue * (100 + (float)$taxPercentage) / 100);
 
                 if ($round) {
                     $totalGross += round($grossValue, $precision);
@@ -413,7 +410,7 @@ class TaxManager extends BaseManager
      */
     public static function mergeNettoRes(array $nettoResA, array $nettoResB): array
     {
-        $sums = array();
+        $sums = [];
         foreach (array_keys($nettoResA + $nettoResB) as $key) {
             $sums[$key] = @($nettoResA[$key] + $nettoResB[$key]);
         }
@@ -434,14 +431,14 @@ class TaxManager extends BaseManager
     /**
      * Merges the new net worth for a specific bid
      *
-     * @param int|null $taxPercentage
+     * @param float|int|null $taxPercentage
      * @param float $nettoValue
      * @param array $nettoRes
      * @return array
      */
-    public static function addValueToNettoRes(?int $taxPercentage, float $nettoValue, array &$nettoRes): array
+    public static function addValueToNettoRes(float|int|null $taxPercentage, float $nettoValue, array &$nettoRes): array
     {
-        $taxPercentage = (int) $taxPercentage;
+        $taxPercentage = (string)$taxPercentage;
 
         if (array_key_exists($taxPercentage, $nettoRes)) {
             $nettoRes[$taxPercentage] += $nettoValue;
@@ -455,12 +452,12 @@ class TaxManager extends BaseManager
     /**
      * Scala nową wartość netto dla konkretnej stawki
      *
-     * @param int|null $taxPercentage
+     * @param float|int|null $taxPercentage
      * @param float $grossValue
      * @param array $grossRes
      * @return array
      */
-    public static function addValueToGrossRes(?int $taxPercentage, float $grossValue, array &$grossRes): array
+    public static function addValueToGrossRes(float|int|null $taxPercentage, float $grossValue, array &$grossRes): array
     {
         return self::addValueToNettoRes($taxPercentage, $grossValue, $grossRes);
     }

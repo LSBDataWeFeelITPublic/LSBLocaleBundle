@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LSB\LocaleBundle\Manager;
 
 use LSB\LocaleBundle\Entity\CurrencyInterface;
+use LSB\LocaleBundle\Exception\MissingDefaultCurrencyException;
 use LSB\LocaleBundle\Factory\CurrencyFactoryInterface;
 use LSB\LocaleBundle\Repository\CurrencyRepositoryInterface;
 use LSB\UtilityBundle\Factory\FactoryInterface;
@@ -57,5 +58,21 @@ class CurrencyManager extends BaseManager
     public function getRepository(): CurrencyRepositoryInterface
     {
         return parent::getRepository();
+    }
+
+    /**
+     * @param bool $throwException
+     * @return CurrencyInterface|null
+     * @throws MissingDefaultCurrencyException
+     */
+    public function getDefaultCurrency(bool $throwException = true): ?CurrencyInterface
+    {
+        $currency = $this->getRepository()->getDefaultCurrency();
+
+        if ($throwException && !$currency instanceof CurrencyInterface) {
+            throw new MissingDefaultCurrencyException();
+        }
+
+        return $currency;
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LSB\LocaleBundle\Repository;
 
+use LSB\LocaleBundle\Entity\CurrencyInterface;
 use LSB\UtilityBundle\Repository\RepositoryInterface;
 
 /**
@@ -11,5 +12,8 @@ use LSB\UtilityBundle\Repository\RepositoryInterface;
  */
 interface CurrencyRepositoryInterface extends RepositoryInterface
 {
-
+    /**
+     * @return CurrencyInterface|null
+     */
+    public function getDefaultCurrency(): ?CurrencyInterface;
 }
