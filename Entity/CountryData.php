@@ -8,11 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable()
  */
-class countryData
+class CountryData
 {
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected string $isoCode;
+
+
 }
