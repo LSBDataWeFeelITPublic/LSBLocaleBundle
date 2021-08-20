@@ -272,18 +272,20 @@ class TaxManager extends BaseManager
      * @param float|int $taxPercentage
      * @param bool $round
      * @param bool $ceil
+     * @param int $precision
      * @return float
      */
     public static function calculateGrossValue(
         float $nettoValue,
         float|int $taxPercentage,
         bool $round = true,
-        bool $ceil = false
+        bool $ceil = false,
+        int $precision = 2
     ): float {
         $grossValue = $nettoValue * ((100 + (float)$taxPercentage) / 100);
 
         if ($round) {
-            $grossValue = round($grossValue, 2);
+            $grossValue = round($grossValue, $precision);
         }
 
         if ($ceil) {
@@ -298,18 +300,20 @@ class TaxManager extends BaseManager
      * @param float|int $taxPercentage
      * @param bool $round
      * @param bool $ceil
+     * @param int $precision
      * @return float
      */
     public static function calculateNettoValue(
         float $grossValue,
         float|int $taxPercentage,
         bool $round = true,
-        bool $ceil = false
+        bool $ceil = false,
+        int $precision = 2
     ): float {
         $nettoValue = $grossValue / ((100 + (float)$taxPercentage) / 100);
 
         if ($round) {
-            $nettoValue = round($nettoValue, 2);
+            $nettoValue = round($nettoValue, $precision);
         }
 
         if ($ceil) {
