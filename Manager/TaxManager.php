@@ -10,10 +10,14 @@ use LSB\LocaleBundle\Factory\TaxFactoryInterface;
 use LSB\LocaleBundle\Repository\TaxRepositoryInterface;
 use LSB\UtilityBundle\Factory\FactoryInterface;
 use LSB\UtilityBundle\Form\BaseEntityType;
+use LSB\UtilityBundle\Helper\ValueHelper;
 use LSB\UtilityBundle\Manager\ObjectManagerInterface;
 use LSB\UtilityBundle\Manager\BaseManager;
 use LSB\UtilityBundle\Repository\RepositoryInterface;
 use Ibericode\Vat\Validator;
+use LSB\UtilityBundle\Value\Value;
+use Money\Currency;
+use Money\Money;
 
 /**
  * Class TaxManager
@@ -330,6 +334,7 @@ class TaxManager extends BaseManager
      * @param bool $addTax
      * @param bool $round
      * @param int $precision
+     * @deprecated
      * @return array
      */
     public static function calculateTotalNettoAndGrossFromNettoRes(
@@ -364,12 +369,103 @@ class TaxManager extends BaseManager
     }
 
     /**
+     * Gross value calculation based on array with tax percentage => value net
+     *
+     * @param string $currencyIsoCode
+     * @param array $totalNettoRes
+     * @param bool $addTax
+     * @param bool $round
+     * @param int $precision
+     * @return array
+     */
+    public static function calculateMoneyTotalNettoAndGrossFromNettoRes(
+        string $currencyIsoCode,
+        array $totalNettoRes,
+        bool $addTax = true,
+        bool $round = true,
+        int $precision = 2
+    ): array {
+
+        $totalNetto = new Money(0, new Currency($currencyIsoCode));
+        $totalGross = new Money(0, new Currency($currencyIsoCode));
+
+        if (count($totalNettoRes) === 0) {
+            return [$totalNetto, $totalGross];
+        }
+
+        /**
+         * @var int $taxPercentage
+         * @var Money $nettoValue
+         */
+        foreach ($totalNettoRes as $taxPercentage => $nettoValue) {
+            $taxValue = ValueHelper::convertToValue($taxPercentage, null, $precision);
+            $totalNetto->add($nettoValue);
+
+            if ($addTax) {
+                $grossValue = $nettoValue->multiply(((ValueHelper::get100Percents($precision) + (int)$taxValue->getAmount()) / ValueHelper::get100Percents($precision)));
+                $totalGross->add($grossValue);
+            } else {
+                $totalGross->add($nettoValue);
+            }
+        }
+
+        return [$totalNetto, $totalGross];
+    }
+
+    /**
+     * @param string $currencyIsoCode
+     * @param array $totalGrossRes
+     * @param bool $addTax
+     * @param int $precision
+     * @return Money[]
+     * @throws \Exception
+     */
+    public static function calculateMoneyTotalNettoAndGrossFromGrossRes(
+        string $currencyIsoCode,
+        array $totalGrossRes,
+        bool $addTax = true,
+        int $precision = 2
+    ): array {
+        $totalNetto = new Money(0, new Currency($currencyIsoCode));
+        $totalGross = new Money(0, new Currency($currencyIsoCode));
+
+        if (count($totalGrossRes) === 0) {
+            return [$totalNetto, $totalGross];
+        }
+
+        /**
+         * @var integer $taxPercentage
+         * @var Money $valueGross
+         */
+        foreach ($totalGrossRes as $taxPercentage => $valueGross) {
+            if (!$valueGross instanceof Money)
+            {
+                throw new \Exception('Money object is required');
+            }
+
+            $totalGross = $totalGross->add($valueGross);
+            //Na tym etapie mamy wartość wyrażoną w integerach
+            $taxValue = ValueHelper::intToValue($taxPercentage, null, $precision);
+
+            if ($addTax) {
+                $valueNetto = $valueGross->divide((string)((ValueHelper::get100Percents($precision) + (int)$taxValue->getAmount()) / ValueHelper::get100Percents($precision)));
+                $totalNetto = $totalNetto->add($valueNetto);
+            } else {
+                $totalNetto = $totalNetto->add($valueGross);
+            }
+        }
+
+        return [$totalNetto, $totalGross];
+    }
+
+    /**
      * Gross value calculation based on array with tax percentage => value gross
      *
      * @param array $totalGrossRes
      * @param bool $addTax
      * @param bool $round
      * @param int $precision
+     * @deprecated
      * @return array
      */
     public static function calculateTotalNettoAndGrossFromGrossRes(
@@ -411,12 +507,35 @@ class TaxManager extends BaseManager
      * @param array $nettoResA
      * @param array $nettoResB
      * @return array
+     * @deprecated
      */
     public static function mergeNettoRes(array $nettoResA, array $nettoResB): array
     {
         $sums = [];
         foreach (array_keys($nettoResA + $nettoResB) as $key) {
             $sums[$key] = @($nettoResA[$key] + $nettoResB[$key]);
+        }
+
+        return $sums;
+    }
+
+    /**
+     * @param array $nettoResA
+     * @param array $nettoResB
+     * @return array
+     * @throws \Exception
+     */
+    public static function mergeMoneyNettoRes(array $nettoResA, array $nettoResB): array
+    {
+        $sums = [];
+        foreach (array_keys($nettoResA + $nettoResB) as $key) {
+            if (isset($nettoResA[$key]) && $nettoResA[$key] instanceof Money && isset($nettoResB[$key]) && $nettoResB[$key] instanceof Money) {
+                $sums[$key] = $nettoResA[$key]->add($nettoResB[$key]);
+            } elseif (isset($nettoResA[$key]) && $nettoResA[$key] instanceof Money) {
+                $sums[$key] = $nettoResA[$key];
+            } elseif (isset($nettoResB[$key]) && $nettoResB[$key] instanceof Money) {
+                $sums[$key] = $nettoResB[$key];
+            }
         }
 
         return $sums;
@@ -433,12 +552,24 @@ class TaxManager extends BaseManager
     }
 
     /**
+     * @param array $grossResA
+     * @param array $grossResB
+     * @return array
+     * @throws \Exception
+     */
+    public static function mergeMoneyRes(array $grossResA, array $grossResB): array
+    {
+        return self::mergeMoneyNettoRes($grossResA, $grossResB);
+    }
+
+    /**
      * Merges the new net worth for a specific bid
      *
      * @param float|int|null $taxPercentage
      * @param float $nettoValue
      * @param array $nettoRes
      * @return array
+     * @deprecated Please use Money method addMoneyValueToNettoRes
      */
     public static function addValueToNettoRes(float|int|null $taxPercentage, float $nettoValue, array &$nettoRes): array
     {
@@ -454,6 +585,28 @@ class TaxManager extends BaseManager
     }
 
     /**
+     * @param Value $taxPercentage
+     * @param Money $nettoValue
+     * @param array $nettoRes
+     * @return void
+     * @throws \Exception
+     */
+    public static function addMoneyValueToNettoRes(Value $taxPercentage, Money $nettoValue, array &$nettoRes): void
+    {
+        if (array_key_exists($taxPercentage->getAmount(), $nettoRes)) {
+            $currentValue = $nettoRes[$taxPercentage->getAmount()];
+
+            if (!$currentValue instanceof Money) {
+                throw new \Exception('Money object is required!');
+            }
+
+            $nettoRes[$taxPercentage->getAmount()] = $nettoRes[$taxPercentage->getAmount()]->add($nettoValue);
+        } else {
+            $nettoRes[$taxPercentage->getAmount()] = $nettoValue;
+        }
+    }
+
+    /**
      * Scala nową wartość netto dla konkretnej stawki
      *
      * @param float|int|null $taxPercentage
@@ -464,5 +617,19 @@ class TaxManager extends BaseManager
     public static function addValueToGrossRes(float|int|null $taxPercentage, float $grossValue, array &$grossRes): array
     {
         return self::addValueToNettoRes($taxPercentage, $grossValue, $grossRes);
+    }
+
+    /**
+     * Scala nową wartość netto dla konkretnej stawki
+     *
+     * @param Value $taxPercentage
+     * @param Money $grossValue
+     * @param array $grossRes
+     * @return void
+     * @throws \Exception
+     */
+    public static function addMoneyValueToGrossRes(Value $taxPercentage, Money $grossValue, array &$grossRes): void
+    {
+        self::addMoneyValueToNettoRes($taxPercentage, $grossValue, $grossRes);
     }
 }
