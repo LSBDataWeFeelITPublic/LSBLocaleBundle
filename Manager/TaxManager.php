@@ -300,6 +300,20 @@ class TaxManager extends BaseManager
     }
 
     /**
+     * @param Money $netValue
+     * @param Value $taxPercentage
+     * @return Money
+     * @throws \Exception
+     */
+    public static function calculateMoneyGrossValue(
+        Money $netValue,
+        Value $taxPercentage
+    ): Money {
+        $precision = ValueHelper::getCurrencyPrecision($netValue->getCurrency()->getCode());
+        return $netValue->multiply((string) ((ValueHelper::get100Percents($precision) + (int) $taxPercentage->getAmount()) / ValueHelper::get100Percents($precision)));
+    }
+
+    /**
      * @param float $grossValue
      * @param float|int $taxPercentage
      * @param bool $round
@@ -325,6 +339,20 @@ class TaxManager extends BaseManager
         }
 
         return (float)$nettoValue;
+    }
+
+    /**
+     * @param Money $grossValue
+     * @param Value $taxPercentage
+     * @return Money
+     * @throws \Exception
+     */
+    public static function calculateMoneyNetValue(
+        Money $grossValue,
+        Value $taxPercentage
+    ): Money {
+        $precision = ValueHelper::getCurrencyPrecision($grossValue->getCurrency()->getCode());
+        return $grossValue->divide((string) ((ValueHelper::get100Percents($precision) + (int)$taxPercentage->getAmount()) / ValueHelper::get100Percents($precision)));
     }
 
     /**
@@ -398,12 +426,12 @@ class TaxManager extends BaseManager
          * @var Money $nettoValue
          */
         foreach ($totalNettoRes as $taxPercentage => $nettoValue) {
-            $taxValue = ValueHelper::convertToValue($taxPercentage, null, $precision);
-            $totalNetto->add($nettoValue);
+            $taxValue = ValueHelper::intToValue($taxPercentage, null, $precision);
+            $totalNetto = $totalNetto->add($nettoValue);
 
             if ($addTax) {
-                $grossValue = $nettoValue->multiply(((ValueHelper::get100Percents($precision) + (int)$taxValue->getAmount()) / ValueHelper::get100Percents($precision)));
-                $totalGross->add($grossValue);
+                $grossValue = $nettoValue->multiply((string)((ValueHelper::get100Percents($precision) + (int)$taxValue->getAmount()) / ValueHelper::get100Percents($precision)));
+                $totalGross = $totalGross->add($grossValue);
             } else {
                 $totalGross->add($nettoValue);
             }
@@ -429,6 +457,7 @@ class TaxManager extends BaseManager
         $totalNetto = new Money(0, new Currency($currencyIsoCode));
         $totalGross = new Money(0, new Currency($currencyIsoCode));
 
+
         if (count($totalGrossRes) === 0) {
             return [$totalNetto, $totalGross];
         }
@@ -444,11 +473,10 @@ class TaxManager extends BaseManager
             }
 
             $totalGross = $totalGross->add($valueGross);
-            //Na tym etapie mamy wartość wyrażoną w integerach
-            $taxValue = ValueHelper::intToValue($taxPercentage, null, $precision);
+            $taxRateValue = ValueHelper::intToValue($taxPercentage, null, $precision);
 
             if ($addTax) {
-                $valueNetto = $valueGross->divide((string)((ValueHelper::get100Percents($precision) + (int)$taxValue->getAmount()) / ValueHelper::get100Percents($precision)));
+                $valueNetto = $valueGross->divide((string)((ValueHelper::get100Percents($precision) + (int)$taxRateValue->getAmount()) / ValueHelper::get100Percents($precision)));
                 $totalNetto = $totalNetto->add($valueNetto);
             } else {
                 $totalNetto = $totalNetto->add($valueGross);
@@ -613,6 +641,7 @@ class TaxManager extends BaseManager
      * @param float $grossValue
      * @param array $grossRes
      * @return array
+     * @deprecated
      */
     public static function addValueToGrossRes(float|int|null $taxPercentage, float $grossValue, array &$grossRes): array
     {
